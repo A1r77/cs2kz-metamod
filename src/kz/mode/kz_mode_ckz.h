@@ -133,9 +133,7 @@ class KZClassicModeService : public KZModeService
 	Vector tpmOrigin = vec3_invalid;
 	Vector lastValidPlane = vec3_origin;
 
-	// Keep track of TryPlayerMove path for triggerfixing.
 	bool airMoving {};
-	CUtlVector<Vector> tpmTriggerFixOrigins;
 
 public:
 	virtual void Reset() override;

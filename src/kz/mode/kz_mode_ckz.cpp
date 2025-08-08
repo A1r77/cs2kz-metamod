@@ -39,7 +39,6 @@ void KZClassicModeService::Reset()
 	this->lastValidPlane = vec3_origin;
 
 	this->airMoving = {};
-	this->tpmTriggerFixOrigins.RemoveAll();
 }
 
 void KZClassicModeService::Cleanup()
@@ -127,11 +126,7 @@ void KZClassicModeService::OnStopTouchGround()
 void KZClassicModeService::OnStartTouchGround()
 {
 	this->SlopeFix();
-	bbox_t bounds;
-	this->player->GetBBoxBounds(&bounds);
-	Vector ground = this->player->landingOrigin;
-	ground.z = this->player->GetGroundPosition() - 0.03125f;
-	this->player->TouchTriggersAlongPath(this->player->landingOrigin, ground, bounds);
+	// Trigger touch removed for HNS mode
 }
 
 void KZClassicModeService::OnPhysicsSimulate()
@@ -231,7 +226,6 @@ void KZClassicModeService::OnPlayerMove()
 
 void KZClassicModeService::OnProcessMovementPost()
 {
-	this->player->UpdateTriggerTouchList();
 	this->RestoreInterpolatedViewAngles();
 	this->oldDuckPressed = this->forcedUnduck || this->player->IsButtonPressed(IN_DUCK, true);
 	this->oldJumpPressed = this->player->IsButtonPressed(IN_JUMP);
@@ -589,7 +583,6 @@ static_function bool IsValidMovementTrace(trace_t &tr, bbox_t bounds, CTraceFilt
 
 void KZClassicModeService::OnTryPlayerMove(Vector *pFirstDest, trace_t *pFirstTrace, bool *bIsSurfing)
 {
-	this->tpmTriggerFixOrigins.RemoveAll();
 	this->overrideTPM = false;
 	this->didTPM = true;
 	CCSPlayerPawn *pawn = this->player->GetPlayerPawn();
@@ -600,7 +593,6 @@ void KZClassicModeService::OnTryPlayerMove(Vector *pFirstDest, trace_t *pFirstTr
 	this->player->GetOrigin(&start);
 	this->player->GetVelocity(&velocity);
 
-	this->tpmTriggerFixOrigins.AddToTail(start);
 	if (velocity.Length() == 0.0f)
 	{
 		// No move required.
@@ -746,8 +738,6 @@ void KZClassicModeService::OnTryPlayerMove(Vector *pFirstDest, trace_t *pFirstTr
 			numPlanes = 0;
 		}
 
-		this->tpmTriggerFixOrigins.AddToTail(pm.m_vEndPos);
-
 		if (allFraction == 1.0f)
 		{
 			break;
@@ -837,19 +827,7 @@ void KZClassicModeService::OnTryPlayerMovePost(Vector *pFirstDest, trace_t *pFir
 		this->player->SetOrigin(this->tpmOrigin);
 		this->player->SetVelocity(this->tpmVelocity);
 	}
-	if (this->airMoving)
-	{
-		if (this->tpmTriggerFixOrigins.Count() > 1)
-		{
-			bbox_t bounds;
-			this->player->GetBBoxBounds(&bounds);
-			for (int i = 0; i < this->tpmTriggerFixOrigins.Count() - 1; i++)
-			{
-				this->player->TouchTriggersAlongPath(this->tpmTriggerFixOrigins[i], this->tpmTriggerFixOrigins[i + 1], bounds);
-			}
-		}
-		this->player->UpdateTriggerTouchList();
-	}
+	// Trigger fix removed for HNS mode
 }
 
 void KZClassicModeService::OnCategorizePosition(bool bStayOnGround)
@@ -903,7 +881,7 @@ void KZClassicModeService::OnCategorizePosition(bool bStayOnGround)
 
 void KZClassicModeService::OnDuckPost()
 {
-	this->player->UpdateTriggerTouchList();
+	// Trigger update removed for HNS mode
 }
 
 void KZClassicModeService::OnAirMove()
