@@ -1,5 +1,4 @@
 #include "kz_mode.h"
-#include "kz_mode_vnl.h"
 #include "kz_mode_ckz.h"
 
 #include "filesystem.h"
@@ -58,8 +57,7 @@ void KZ::mode::InitModeManager()
 	{
 		return;
 	}
-	ModeServiceFactory vnlFactory = [](KZPlayer *player) -> KZModeService * { return new KZVanillaModeService(player); };
-	modeManager.RegisterMode(g_PLID, "VNL", "Vanilla", vnlFactory);
+	// VNL mode removed - using CKZ as default mode only
 	KZDatabaseService::RegisterEventListener(&databaseEventListener);
 	KZOptionService::RegisterEventListener(&optionEventListener);
 	initialized = true;
@@ -195,8 +193,8 @@ bool KZModeManager::RegisterMode(PluginId id, const char *shortModeName, const c
 
 void KZModeManager::UnregisterMode(PluginId id)
 {
-	// Cannot unregister VNL.
-	if (id = g_PLID)
+	// Cannot unregister built-in CKZ mode.
+	if (id == g_PLID)
 	{
 		return;
 	}
@@ -215,7 +213,8 @@ void KZModeManager::UnregisterMode(PluginId id)
 				if (!V_strcmp(player->modeService->GetModeName(), modeInfos[i].longModeName)
 					|| !V_strcmp(player->modeService->GetModeShortName(), modeInfos[i].shortModeName))
 				{
-					this->SwitchToMode(player, "VNL");
+					// Fallback to built-in CKZ mode
+					KZ::mode::InitModeService(player);
 				}
 			}
 
@@ -384,7 +383,8 @@ KZModeManager::ModePluginInfo KZ::mode::GetModeInfo(KZ::API::Mode mode)
 	{
 		case KZ::API::Mode::Vanilla:
 		{
-			return KZ::mode::GetModeInfo("vanilla");
+			// Vanilla mode removed, fallback to Classic
+			return KZ::mode::GetModeInfo("classic");
 		}
 		case KZ::API::Mode::Classic:
 		{
