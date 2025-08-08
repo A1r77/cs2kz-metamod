@@ -3,8 +3,12 @@
 #include "utils/utils.h"
 #include "simplecmds.h"
 #include "../kz/kz.h"
+
+// HNS: Core modules - keep these
 #include "../kz/language/kz_language.h"
-#include "../kz/option/kz_option.h"
+
+// HNS: Non-core modules disabled
+// #include "../kz/option/kz_option.h"
 #include "utils/tables.h"
 
 #include "tier0/memdbgon.h"

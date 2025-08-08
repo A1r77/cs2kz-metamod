@@ -10,18 +10,22 @@
 
 #include "movement/movement.h"
 #include "kz/kz.h"
-#include "kz/db/kz_db.h"
-#include "kz/hud/kz_hud.h"
+
+// HNS: Core modules - keep these
 #include "kz/mode/kz_mode.h"
-#include "kz/spec/kz_spec.h"
-#include "kz/goto/kz_goto.h"
-#include "kz/style/kz_style.h"
-#include "kz/quiet/kz_quiet.h"
-#include "kz/tip/kz_tip.h"
-#include "kz/option/kz_option.h"
 #include "kz/language/kz_language.h"
-#include "kz/mappingapi/kz_mappingapi.h"
-#include "kz/global/kz_global.h"
+
+// HNS: Non-core modules disabled - not compiled for HNS
+// #include "kz/db/kz_db.h"
+// #include "kz/hud/kz_hud.h"
+// #include "kz/spec/kz_spec.h"
+// #include "kz/goto/kz_goto.h"
+// #include "kz/style/kz_style.h"
+// #include "kz/quiet/kz_quiet.h"
+// #include "kz/tip/kz_tip.h"
+// #include "kz/option/kz_option.h"
+// #include "kz/mappingapi/kz_mappingapi.h"
+// #include "kz/global/kz_global.h"
 
 #include "version.h"
 
@@ -49,28 +53,38 @@ bool KZPlugin::Load(PluginId id, ISmmAPI *ismm, char *error, size_t maxlen, bool
 	ConVar_Register();
 	hooks::Initialize();
 	movement::InitDetours();
-	KZCheckpointService::Init();
-	KZTimerService::Init();
-	KZSpecService::Init();
-	KZGotoService::Init();
-	KZHUDService::Init();
+	
+	// HNS: Core module initialization - keep these
 	KZLanguageService::Init();
-	KZ::misc::Init();
-	KZQuietService::Init();
+	
+	// HNS: Non-core module initialization disabled
+	// KZCheckpointService::Init();
+	// KZTimerService::Init();
+	// KZSpecService::Init();
+	// KZGotoService::Init();
+	// KZHUDService::Init();
+	// KZ::misc::Init();
+	// KZQuietService::Init();
+	
 	if (!KZ::mode::CheckModeCvars())
 	{
 		return false;
 	}
 
 	ismm->AddListener(this, this);
-	KZ::mapapi::Init();
+	
+	// HNS: Core module manager initialization
 	KZ::mode::InitModeManager();
-	KZ::style::InitStyleManager();
+	
+	// HNS: Non-core module initialization disabled
+	// KZ::mapapi::Init();
+	// KZ::style::InitStyleManager();
 
 	KZ::mode::DisableReplicatedModeCvars();
 
-	KZOptionService::InitOptions();
-	KZTipService::Init();
+	// HNS: Option and tip services disabled
+	// KZOptionService::InitOptions();
+	// KZTipService::Init();
 	if (late)
 	{
 		g_steamAPI.Init();
@@ -84,24 +98,29 @@ bool KZPlugin::Load(PluginId id, ISmmAPI *ismm, char *error, size_t maxlen, bool
 bool KZPlugin::Unload(char *error, size_t maxlen)
 {
 	this->unloading = true;
-	KZ::misc::UnrestrictTimeLimit();
+	// HNS: Misc time limit disabled
+	// KZ::misc::UnrestrictTimeLimit();
 	hooks::Cleanup();
 	KZ::mode::EnableReplicatedModeCvars();
 	utils::Cleanup();
 	g_pKZModeManager->Cleanup();
-	g_pKZStyleManager->Cleanup();
+	// HNS: Style manager disabled
+	// g_pKZStyleManager->Cleanup();
 	g_pPlayerManager->Cleanup();
-	KZDatabaseService::Cleanup();
-	KZGlobalService::Cleanup();
+	// HNS: Database and global services disabled
+	// KZDatabaseService::Cleanup();
+	// KZGlobalService::Cleanup();
 	ConVar_Unregister();
 	return true;
 }
 
 void KZPlugin::AllPluginsLoaded()
 {
-	KZDatabaseService::Init();
+	// HNS: Database service disabled
+	// KZDatabaseService::Init();
 	// KZ::mode::LoadModePlugins(); // Removed: CKZ is now built-in
-	KZ::style::LoadStylePlugins();
+	// HNS: Style plugins disabled
+	// KZ::style::LoadStylePlugins();
 	g_pKZPlayerManager->ResetPlayers();
 	this->UpdateSelfMD5();
 	g_pMultiAddonManager = (IMultiAddonManager *)g_SMAPI->MetaFactory(MULTIADDONMANAGER_INTERFACE, nullptr, nullptr);
@@ -187,21 +206,23 @@ void *KZPlugin::OnMetamodQuery(const char *iface, int *ret)
 		*ret = META_IFACE_OK;
 		return g_pKZModeManager;
 	}
-	else if (strcmp(iface, KZ_STYLE_MANAGER_INTERFACE) == 0)
-	{
-		*ret = META_IFACE_OK;
-		return g_pKZStyleManager;
-	}
+	// HNS: Style manager interface disabled
+	// else if (strcmp(iface, KZ_STYLE_MANAGER_INTERFACE) == 0)
+	// {
+	//	*ret = META_IFACE_OK;
+	//	return g_pKZStyleManager;
+	// }
 	else if (strcmp(iface, KZ_UTILS_INTERFACE) == 0)
 	{
 		*ret = META_IFACE_OK;
 		return g_pKZUtils;
 	}
-	else if (strcmp(iface, KZ_MAPPING_INTERFACE) == 0)
-	{
-		*ret = META_IFACE_OK;
-		return g_pMappingApi;
-	}
+	// HNS: Mapping interface disabled
+	// else if (strcmp(iface, KZ_MAPPING_INTERFACE) == 0)
+	// {
+	//	*ret = META_IFACE_OK;
+	//	return g_pMappingApi;
+	// }
 	*ret = META_IFACE_FAILED;
 
 	return NULL;

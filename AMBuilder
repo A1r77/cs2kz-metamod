@@ -65,7 +65,8 @@ for sdk_target in MMSPlugin.sdk_targets:
       os.path.join(sdk['path'], 'lib', 'public', 'win64', 'mathlib.lib'),
       os.path.join(builder.sourcePath, 'vendor', 'steam_api64.lib'),
       os.path.join(builder.sourcePath, 'vendor', 'mbedTLS.lib'),
-      'bcrypt.lib'
+      'bcrypt.lib',
+      'crypt32.lib'
     ]
     binary.sources += [
       'src/utils/plat_win.cpp'
@@ -104,42 +105,46 @@ for sdk_target in MMSPlugin.sdk_targets:
     os.path.join(builder.sourcePath, 'src', 'movement', 'mv_manager.cpp'),
     os.path.join(builder.sourcePath, 'src', 'movement', 'mv_player.cpp'),
     
-    os.path.join(builder.sourcePath, 'src', 'kz', 'misc', 'kz_misc.cpp'),
-    os.path.join(builder.sourcePath, 'src', 'kz', 'misc', 'block_radio.cpp'),
-    os.path.join(builder.sourcePath, 'src', 'kz', 'misc', 'time_limit.cpp'),
+    # HNS: Misc module disabled
+    # os.path.join(builder.sourcePath, 'src', 'kz', 'misc', 'kz_misc.cpp'),
+    # os.path.join(builder.sourcePath, 'src', 'kz', 'misc', 'block_radio.cpp'),
+    # os.path.join(builder.sourcePath, 'src', 'kz', 'misc', 'time_limit.cpp'),
     
 
     os.path.join(builder.sourcePath, 'src', 'kz', 'kz_manager.cpp'),
     os.path.join(builder.sourcePath, 'src', 'kz', 'kz_player.cpp'),
     os.path.join(builder.sourcePath, 'src', 'kz', 'kz_player_print.cpp'),
 
-    os.path.join(builder.sourcePath, 'src', 'kz', 'anticheat', 'kz_anticheat.cpp'),
-    os.path.join(builder.sourcePath, 'src', 'kz', 'beam', 'kz_beam.cpp'),
-    os.path.join(builder.sourcePath, 'src', 'kz', 'checkpoint', 'kz_checkpoint.cpp'),
-    os.path.join(builder.sourcePath, 'src', 'kz', 'checkpoint', 'commands.cpp'),
+    # HNS: Non-core modules disabled for simplification
+    # os.path.join(builder.sourcePath, 'src', 'kz', 'anticheat', 'kz_anticheat.cpp'),
+    # os.path.join(builder.sourcePath, 'src', 'kz', 'beam', 'kz_beam.cpp'),
+    # os.path.join(builder.sourcePath, 'src', 'kz', 'checkpoint', 'kz_checkpoint.cpp'),
+    # os.path.join(builder.sourcePath, 'src', 'kz', 'checkpoint', 'commands.cpp'),
     
-    os.path.join(builder.sourcePath, 'src', 'kz', 'db', 'kz_db.cpp'),
-    os.path.join(builder.sourcePath, 'src', 'kz', 'db', 'find_courses.cpp'),
-    os.path.join(builder.sourcePath, 'src', 'kz', 'db', 'find_pb.cpp'),
-    os.path.join(builder.sourcePath, 'src', 'kz', 'db', 'find_player.cpp'),
-    os.path.join(builder.sourcePath, 'src', 'kz', 'db', 'find_records.cpp'),
-    os.path.join(builder.sourcePath, 'src', 'kz', 'db', 'migrations.cpp'),
-    os.path.join(builder.sourcePath, 'src', 'kz', 'db', 'save_prefs.cpp'),
-    os.path.join(builder.sourcePath, 'src', 'kz', 'db', 'save_time.cpp'),
-    os.path.join(builder.sourcePath, 'src', 'kz', 'db', 'setup_client.cpp'),
-    os.path.join(builder.sourcePath, 'src', 'kz', 'db', 'setup_database.cpp'),
-    os.path.join(builder.sourcePath, 'src', 'kz', 'db', 'setup_map_courses.cpp'),
-    os.path.join(builder.sourcePath, 'src', 'kz', 'db', 'setup_map.cpp'),
-    os.path.join(builder.sourcePath, 'src', 'kz', 'db', 'setup_styles.cpp'),
+    # HNS: Database module disabled - not needed for HNS
+    # os.path.join(builder.sourcePath, 'src', 'kz', 'db', 'kz_db.cpp'),
+    # os.path.join(builder.sourcePath, 'src', 'kz', 'db', 'find_courses.cpp'),
+    # os.path.join(builder.sourcePath, 'src', 'kz', 'db', 'find_pb.cpp'),
+    # os.path.join(builder.sourcePath, 'src', 'kz', 'db', 'find_player.cpp'),
+    # os.path.join(builder.sourcePath, 'src', 'kz', 'db', 'find_records.cpp'),
+    # os.path.join(builder.sourcePath, 'src', 'kz', 'db', 'migrations.cpp'),
+    # os.path.join(builder.sourcePath, 'src', 'kz', 'db', 'save_prefs.cpp'),
+    # os.path.join(builder.sourcePath, 'src', 'kz', 'db', 'save_time.cpp'),
+    # os.path.join(builder.sourcePath, 'src', 'kz', 'db', 'setup_client.cpp'),
+    # os.path.join(builder.sourcePath, 'src', 'kz', 'db', 'setup_database.cpp'),
+    # os.path.join(builder.sourcePath, 'src', 'kz', 'db', 'setup_map_courses.cpp'),
+    # os.path.join(builder.sourcePath, 'src', 'kz', 'db', 'setup_map.cpp'),
+    # os.path.join(builder.sourcePath, 'src', 'kz', 'db', 'setup_styles.cpp'),
 
-    os.path.join(builder.sourcePath, 'src', 'kz', 'global', 'kz_global.cpp'),
-    os.path.join(builder.sourcePath, 'src', 'kz', 'global', 'commands.cpp'),
-    os.path.join(builder.sourcePath, 'src', 'kz', 'global', 'enforcer.cpp'),
-    os.path.join(builder.sourcePath, 'src', 'kz', 'global', 'api.cpp'),
-    os.path.join(builder.sourcePath, 'src', 'kz', 'global', 'handshake.cpp'),
-    os.path.join(builder.sourcePath, 'src', 'kz', 'global', 'events.cpp'),
-    os.path.join(builder.sourcePath, 'src', 'kz', 'hud', 'kz_hud.cpp'),
-    os.path.join(builder.sourcePath, 'src', 'kz', 'mappingapi', 'kz_mappingapi.cpp'),
+    # HNS: Global API and HUD modules disabled - not needed for HNS
+    # os.path.join(builder.sourcePath, 'src', 'kz', 'global', 'kz_global.cpp'),
+    # os.path.join(builder.sourcePath, 'src', 'kz', 'global', 'commands.cpp'),
+    # os.path.join(builder.sourcePath, 'src', 'kz', 'global', 'enforcer.cpp'),
+    # os.path.join(builder.sourcePath, 'src', 'kz', 'global', 'api.cpp'),
+    # os.path.join(builder.sourcePath, 'src', 'kz', 'global', 'handshake.cpp'),
+    # os.path.join(builder.sourcePath, 'src', 'kz', 'global', 'events.cpp'),
+    # os.path.join(builder.sourcePath, 'src', 'kz', 'hud', 'kz_hud.cpp'),
+    # os.path.join(builder.sourcePath, 'src', 'kz', 'mappingapi', 'kz_mappingapi.cpp'),
 
     os.path.join(builder.sourcePath, 'src', 'kz', 'jumpstats', 'kz_jumpstats.cpp'),
     os.path.join(builder.sourcePath, 'src', 'kz', 'jumpstats', 'jump_reporting.cpp'),
@@ -147,33 +152,38 @@ for sdk_target in MMSPlugin.sdk_targets:
     
 
     os.path.join(builder.sourcePath, 'src', 'kz', 'language', 'kz_language.cpp'),
-    os.path.join(builder.sourcePath, 'src', 'kz', 'measure', 'kz_measure.cpp'),
+    # HNS: Measure module disabled
+    # os.path.join(builder.sourcePath, 'src', 'kz', 'measure', 'kz_measure.cpp'),
     os.path.join(builder.sourcePath, 'src', 'kz', 'mode', 'kz_mode_manager.cpp'),
     os.path.join(builder.sourcePath, 'src', 'kz', 'mode', 'kz_mode_ckz.cpp'),
-    os.path.join(builder.sourcePath, 'src', 'kz', 'noclip', 'kz_noclip.cpp'),
-    os.path.join(builder.sourcePath, 'src', 'kz', 'option', 'kz_option.cpp'),
-    os.path.join(builder.sourcePath, 'src', 'kz', 'quiet', 'kz_quiet.cpp'),
-    os.path.join(builder.sourcePath, 'src', 'kz', 'racing', 'kz_racing.cpp'),
-    os.path.join(builder.sourcePath, 'src', 'kz', 'replays', 'kz_replays.cpp'),
-    os.path.join(builder.sourcePath, 'src', 'kz', 'saveloc', 'kz_saveloc.cpp'),
-    os.path.join(builder.sourcePath, 'src', 'kz', 'spec', 'kz_spec.cpp'),
-    os.path.join(builder.sourcePath, 'src', 'kz', 'goto', 'kz_goto.cpp'),
-    os.path.join(builder.sourcePath, 'src', 'kz', 'style', 'kz_style_manager.cpp'),
-    os.path.join(builder.sourcePath, 'src', 'kz', 'telemetry', 'kz_telemetry.cpp'),
+    # HNS: Additional modules disabled for HNS simplification
+    # os.path.join(builder.sourcePath, 'src', 'kz', 'noclip', 'kz_noclip.cpp'),
+    # os.path.join(builder.sourcePath, 'src', 'kz', 'option', 'kz_option.cpp'),
+    # os.path.join(builder.sourcePath, 'src', 'kz', 'quiet', 'kz_quiet.cpp'),
+    # os.path.join(builder.sourcePath, 'src', 'kz', 'racing', 'kz_racing.cpp'),
+    # os.path.join(builder.sourcePath, 'src', 'kz', 'replays', 'kz_replays.cpp'),
+    # os.path.join(builder.sourcePath, 'src', 'kz', 'saveloc', 'kz_saveloc.cpp'),
+    # os.path.join(builder.sourcePath, 'src', 'kz', 'spec', 'kz_spec.cpp'),
+    # os.path.join(builder.sourcePath, 'src', 'kz', 'goto', 'kz_goto.cpp'),
+    # os.path.join(builder.sourcePath, 'src', 'kz', 'style', 'kz_style_manager.cpp'),
+    # os.path.join(builder.sourcePath, 'src', 'kz', 'telemetry', 'kz_telemetry.cpp'),
     
-    os.path.join(builder.sourcePath, 'src', 'kz', 'timer', 'kz_timer.cpp'),
-    os.path.join(builder.sourcePath, 'src', 'kz', 'timer', 'announce.cpp'),
-
-    os.path.join(builder.sourcePath, 'src', 'kz', 'timer', 'queries', 'base_request.cpp'),
-    os.path.join(builder.sourcePath, 'src', 'kz', 'timer', 'queries', 'course_top.cpp'),
-    os.path.join(builder.sourcePath, 'src', 'kz', 'timer', 'queries', 'top_record.cpp'),
-    os.path.join(builder.sourcePath, 'src', 'kz', 'timer', 'queries', 'personal_best.cpp'),
+    # HNS: Timer system disabled - not needed for HNS
+    # os.path.join(builder.sourcePath, 'src', 'kz', 'timer', 'kz_timer.cpp'),
+    # os.path.join(builder.sourcePath, 'src', 'kz', 'timer', 'announce.cpp'),
+    #
+    # os.path.join(builder.sourcePath, 'src', 'kz', 'timer', 'queries', 'base_request.cpp'),
+    # os.path.join(builder.sourcePath, 'src', 'kz', 'timer', 'queries', 'course_top.cpp'),
+    # os.path.join(builder.sourcePath, 'src', 'kz', 'timer', 'queries', 'top_record.cpp'),
+    # os.path.join(builder.sourcePath, 'src', 'kz', 'timer', 'queries', 'personal_best.cpp'),
     
-    os.path.join(builder.sourcePath, 'src', 'kz', 'tip', 'kz_tip.cpp'),
+    # HNS: Tip module disabled
+    # os.path.join(builder.sourcePath, 'src', 'kz', 'tip', 'kz_tip.cpp'),
     
-    os.path.join(builder.sourcePath, 'src', 'kz', 'trigger', 'callbacks.cpp'),
-    os.path.join(builder.sourcePath, 'src', 'kz', 'trigger', 'kz_trigger.cpp'),
-    os.path.join(builder.sourcePath, 'src', 'kz', 'trigger', 'mapping_api.cpp'),
+    # HNS: Trigger system disabled - not needed for HNS
+    # os.path.join(builder.sourcePath, 'src', 'kz', 'trigger', 'callbacks.cpp'),
+    # os.path.join(builder.sourcePath, 'src', 'kz', 'trigger', 'kz_trigger.cpp'),
+    # os.path.join(builder.sourcePath, 'src', 'kz', 'trigger', 'mapping_api.cpp'),
   ]
 
   ws_dir = os.path.join(builder.sourcePath, 'vendor', 'ixwebsocket', 'ixwebsocket')
@@ -186,39 +196,39 @@ for sdk_target in MMSPlugin.sdk_targets:
 
   # Mode binaries - REMOVED: CKZ is now built into main plugin
   
-  # Style binaries
-  style_binary = MMSPlugin.HL2Library(builder, cxx, f"{MMSPlugin.plugin_name}-style-autobhop", sdk)
-
-  if style_binary.compiler.family == 'gcc' or style_binary.compiler.family == 'clang':
-    style_binary.compiler.defines += ['_GLIBCXX_USE_CXX11_ABI=0']
-
-  if style_binary.compiler.family == 'clang':
-    style_binary.compiler.cxxflags += ['-Wno-register', '-frtti', '-Wno-invalid-offsetof', '-Wno-parentheses']
-
-  style_binary.compiler.cxxincludes += CXXINCLUDES
-
-  if style_binary.compiler.target.platform == 'linux':
-    style_binary.compiler.postlink += [
-      os.path.join(sdk['path'], 'lib', 'linux64', 'mathlib.a'),
-    ] 
-    style_binary.sources += [
-      'src/utils/plat_linux.cpp'
-      ]
-  elif style_binary.compiler.target.platform == 'windows':
-    style_binary.compiler.postlink += [
-      os.path.join(sdk['path'], 'lib', 'public', 'win64', 'mathlib.lib'),
-    ]
-    style_binary.sources += [
-      'src/utils/plat_win.cpp'
-      ]
-
-  style_binary.sources += [
-    os.path.join(sdk['path'], 'entity2', 'entityidentity.cpp'),
-    os.path.join(sdk['path'], 'entity2', 'entitysystem.cpp'),
-    os.path.join(builder.sourcePath, 'src', 'utils', 'schema.cpp'),
-    os.path.join(builder.sourcePath, 'src', 'utils', 'gameconfig.cpp'),
-    os.path.join(builder.sourcePath, 'src', 'kz', 'style', 'kz_style_autobhop.cpp'),
-  ]
+  # HNS: Style binaries disabled - not needed for HNS
+  # style_binary = MMSPlugin.HL2Library(builder, cxx, f"{MMSPlugin.plugin_name}-style-autobhop", sdk)
+  #
+  # if style_binary.compiler.family == 'gcc' or style_binary.compiler.family == 'clang':
+  #   style_binary.compiler.defines += ['_GLIBCXX_USE_CXX11_ABI=0']
+  #
+  # if style_binary.compiler.family == 'clang':
+  #   style_binary.compiler.cxxflags += ['-Wno-register', '-frtti', '-Wno-invalid-offsetof', '-Wno-parentheses']
+  #
+  # style_binary.compiler.cxxincludes += CXXINCLUDES
+  #
+  # if style_binary.compiler.target.platform == 'linux':
+  #   style_binary.compiler.postlink += [
+  #     os.path.join(sdk['path'], 'lib', 'linux64', 'mathlib.a'),
+  #   ] 
+  #   style_binary.sources += [
+  #     'src/utils/plat_linux.cpp'
+  #     ]
+  # elif style_binary.compiler.target.platform == 'windows':
+  #   style_binary.compiler.postlink += [
+  #     os.path.join(sdk['path'], 'lib', 'public', 'win64', 'mathlib.lib'),
+  #   ]
+  #   style_binary.sources += [
+  #     'src/utils/plat_win.cpp'
+  #     ]
+  #
+  # style_binary.sources += [
+  #   os.path.join(sdk['path'], 'entity2', 'entityidentity.cpp'),
+  #   os.path.join(sdk['path'], 'entity2', 'entitysystem.cpp'),
+  #   os.path.join(builder.sourcePath, 'src', 'utils', 'schema.cpp'),
+  #   os.path.join(builder.sourcePath, 'src', 'utils', 'gameconfig.cpp'),
+  #   os.path.join(builder.sourcePath, 'src', 'kz', 'style', 'kz_style_autobhop.cpp'),
+  # ]
   
   protoc_builder = builder.tools.Protoc(protoc = sdk_target.protoc, sources = PROTOS)
   protoc_builder.protoc.includes += [
@@ -227,18 +237,22 @@ for sdk_target in MMSPlugin.sdk_targets:
   ]
 
   binary.custom = [protoc_builder]
-  style_binary.custom = [protoc_builder]
+  # HNS: Style binary compilation disabled
+  # style_binary.custom = [protoc_builder]
 
   nodes = builder.Add(binary)
-  style_nodes = builder.Add(style_binary)
+  # HNS: Style binary compilation disabled  
+  # style_nodes = builder.Add(style_binary)
 
   # If we are generating a VS project, make sure to add the styles in, and the build folder for linter.
   if builder.options.generator == 'vs':
-    binary.sources += style_binary.sources
+    # HNS: Style binary sources disabled
+    # binary.sources += style_binary.sources
     binary.compiler.cxxincludes += [os.path.join(builder.buildPath, MMSPlugin.plugin_name, f'{binary.compiler.target.platform}-{cxx.target.arch}')]
 
 
   MMSPlugin.binaries += [nodes]
-  MMSPlugin.style_binaries += [style_nodes]
+  # HNS: Style binaries disabled
+  # MMSPlugin.style_binaries += [style_nodes]
 
 # vim: filetype=python expandtab shiftwidth=2 tabstop=8 textwidth=99

@@ -12,18 +12,22 @@
 #include "cs2kz.h"
 #include "ctimer.h"
 #include "kz/kz.h"
-#include "kz/beam/kz_beam.h"
+
+// HNS: Core modules - keep these
 #include "kz/jumpstats/kz_jumpstats.h"
-#include "kz/option/kz_option.h"
-#include "kz/quiet/kz_quiet.h"
-#include "kz/timer/kz_timer.h"
-#include "kz/timer/announce.h"
-#include "kz/timer/queries/base_request.h"
-#include "kz/telemetry/kz_telemetry.h"
-#include "kz/trigger/kz_trigger.h"
-#include "kz/db/kz_db.h"
-#include "kz/mappingapi/kz_mappingapi.h"
-#include "kz/global/kz_global.h"
+
+// HNS: Non-core modules disabled - not compiled for HNS
+// #include "kz/beam/kz_beam.h"
+// #include "kz/option/kz_option.h"
+// #include "kz/quiet/kz_quiet.h"
+// #include "kz/timer/kz_timer.h"
+// #include "kz/timer/announce.h"
+// #include "kz/timer/queries/base_request.h"
+// #include "kz/telemetry/kz_telemetry.h"
+// #include "kz/trigger/kz_trigger.h"
+// #include "kz/db/kz_db.h"
+// #include "kz/mappingapi/kz_mappingapi.h"
+// #include "kz/global/kz_global.h"
 #include "utils/utils.h"
 #include "sdk/entity/cbasetrigger.h"
 
@@ -348,7 +352,8 @@ void EntListener::OnEntitySpawned(CEntityInstance *pEntity)
 		CBaseTrigger *trigger = static_cast<CBaseTrigger *>(pEntity);
 		trigger->m_fEffects() &= ~EF_NODRAW;
 		AddEntityHooks(static_cast<CBaseEntity *>(pEntity));
-		KZ::mapapi::CheckEndTimerTrigger((CBaseTrigger *)pEntity);
+		// HNS: Mapping API disabled
+		// KZ::mapapi::CheckEndTimerTrigger((CBaseTrigger *)pEntity);
 	}
 }
 
@@ -379,10 +384,11 @@ void hooks::HookEntities()
 static_function void Hook_OnStartTouch(CBaseEntity *pOther)
 {
 	CBaseEntity *pThis = META_IFACEPTR(CBaseEntity);
-	if (KZTriggerService::IsManagedByTriggerService(pThis, pOther) && !g_KZPlugin.simulatingPhysics)
-	{
-		RETURN_META(MRES_SUPERCEDE);
-	}
+	// HNS: Trigger service disabled - allow default behavior
+	// if (KZTriggerService::IsManagedByTriggerService(pThis, pOther) && !g_KZPlugin.simulatingPhysics)
+	// {
+	//	RETURN_META(MRES_SUPERCEDE);
+	// }
 
 	RETURN_META(MRES_IGNORED);
 }
@@ -390,50 +396,55 @@ static_function void Hook_OnStartTouch(CBaseEntity *pOther)
 static_function void Hook_OnStartTouchPost(CBaseEntity *pOther)
 {
 	CBaseEntity *pThis = META_IFACEPTR(CBaseEntity);
-	if (KZTriggerService::IsManagedByTriggerService(pThis, pOther) && !g_KZPlugin.simulatingPhysics)
-	{
-		RETURN_META(MRES_SUPERCEDE);
-	}
+	// HNS: Trigger service disabled - allow default behavior
+	// if (KZTriggerService::IsManagedByTriggerService(pThis, pOther) && !g_KZPlugin.simulatingPhysics)
+	// {
+	//	RETURN_META(MRES_SUPERCEDE);
+	// }
 	RETURN_META(MRES_IGNORED);
 }
 
 static_function void Hook_OnTouch(CBaseEntity *pOther)
 {
 	CBaseEntity *pThis = META_IFACEPTR(CBaseEntity);
-	if (KZTriggerService::IsManagedByTriggerService(pThis, pOther) && !g_KZPlugin.simulatingPhysics)
-	{
-		RETURN_META(MRES_SUPERCEDE);
-	}
+	// HNS: Trigger service disabled - allow default behavior
+	// if (KZTriggerService::IsManagedByTriggerService(pThis, pOther) && !g_KZPlugin.simulatingPhysics)
+	// {
+	//	RETURN_META(MRES_SUPERCEDE);
+	// }
 	RETURN_META(MRES_IGNORED);
 }
 
 static_function void Hook_OnTouchPost(CBaseEntity *pOther)
 {
 	CBaseEntity *pThis = META_IFACEPTR(CBaseEntity);
-	if (KZTriggerService::IsManagedByTriggerService(pThis, pOther) && !g_KZPlugin.simulatingPhysics)
-	{
-		RETURN_META(MRES_SUPERCEDE);
-	}
+	// HNS: Trigger service disabled - allow default behavior
+	// if (KZTriggerService::IsManagedByTriggerService(pThis, pOther) && !g_KZPlugin.simulatingPhysics)
+	// {
+	//	RETURN_META(MRES_SUPERCEDE);
+	// }
 	RETURN_META(MRES_IGNORED);
 }
 
 static_function void Hook_OnEndTouch(CBaseEntity *pOther)
 {
 	CBaseEntity *pThis = META_IFACEPTR(CBaseEntity);
-	if (KZTriggerService::IsManagedByTriggerService(pThis, pOther) && !g_KZPlugin.simulatingPhysics)
-	{
-		RETURN_META(MRES_SUPERCEDE);
-	}
+	// HNS: Trigger service disabled - allow default behavior
+	// if (KZTriggerService::IsManagedByTriggerService(pThis, pOther) && !g_KZPlugin.simulatingPhysics)
+	// {
+	//	RETURN_META(MRES_SUPERCEDE);
+	// }
 	RETURN_META(MRES_IGNORED);
 }
 
 static_function void Hook_OnEndTouchPost(CBaseEntity *pOther)
 {
 	CBaseEntity *pThis = META_IFACEPTR(CBaseEntity);
-	if (KZTriggerService::IsManagedByTriggerService(pThis, pOther) && !g_KZPlugin.simulatingPhysics)
-	{
-		RETURN_META(MRES_SUPERCEDE);
-	}
+	// HNS: Trigger service disabled - allow default behavior
+	// if (KZTriggerService::IsManagedByTriggerService(pThis, pOther) && !g_KZPlugin.simulatingPhysics)
+	// {
+	//	RETURN_META(MRES_SUPERCEDE);
+	// }
 	RETURN_META(MRES_IGNORED);
 }
 
@@ -464,7 +475,8 @@ static_function void Hook_OnChangeTeamPost(i32 team)
 static_function void Hook_CheckTransmit(CCheckTransmitInfo **pInfos, int infoCount, CBitVec<16384> &unk1, CBitVec<16384> &,
 										const Entity2Networkable_t **pNetworkables, const uint16 *pEntityIndicies, int nEntities)
 {
-	KZ::quiet::OnCheckTransmit(pInfos, infoCount);
+	// HNS: Quiet service disabled
+	// KZ::quiet::OnCheckTransmit(pInfos, infoCount);
 	RETURN_META(MRES_IGNORED);
 }
 
@@ -473,10 +485,11 @@ static_function void Hook_GameFrame(bool simulating, bool bFirstTick, bool bLast
 {
 	VPROF_BUDGET(__func__, "CS2KZ");
 	g_KZPlugin.serverGlobals = *(g_pKZUtils->GetGlobals());
-	RecordAnnounce::Check();
-	BaseRequest::CheckRequests();
-	KZTelemetryService::ActiveCheck();
-	KZBeamService::UpdateBeams();
+	// HNS: Timer and telemetry services disabled
+	// RecordAnnounce::Check();
+	// BaseRequest::CheckRequests();
+	// KZTelemetryService::ActiveCheck();
+	// KZBeamService::UpdateBeams();
 	RETURN_META(MRES_IGNORED);
 }
 
@@ -548,9 +561,10 @@ static_function void Hook_ClientDisconnect(CPlayerSlot slot, ENetworkDisconnecti
 	{
 		Warning("WARNING: Player pawn for slot %i not found!\n", slot.Get());
 	}
-	player->timerService->OnClientDisconnect();
-	player->optionService->OnClientDisconnect();
-	player->globalService->OnClientDisconnect();
+	// HNS: Service disconnect calls disabled - non-core services not available
+	// player->timerService->OnClientDisconnect();
+	// player->optionService->OnClientDisconnect();
+	// player->globalService->OnClientDisconnect();
 	g_pKZPlayerManager->OnClientDisconnect(slot, reason, pszName, xuid, pszNetworkID);
 	RETURN_META(MRES_IGNORED);
 }
@@ -563,10 +577,11 @@ static_function void Hook_ClientVoice(CPlayerSlot slot)
 static_function void Hook_ClientCommand(CPlayerSlot slot, const CCommand &args)
 {
 	VPROF_BUDGET(__func__, "CS2KZ");
-	if (META_RES result = KZ::misc::CheckBlockedRadioCommands(args[0]))
-	{
-		RETURN_META(result);
-	}
+	// HNS: Misc radio command blocking disabled
+	// if (META_RES result = KZ::misc::CheckBlockedRadioCommands(args[0]))
+	// {
+	//	RETURN_META(result);
+	// }
 	if (META_RES result = scmd::OnClientCommand(slot, args))
 	{
 		RETURN_META(result);
@@ -578,8 +593,10 @@ static_function void Hook_ClientCommand(CPlayerSlot slot, const CCommand &args)
 static_function void Hook_StartupServer(const GameSessionConfiguration_t &config, ISource2WorldSession *, const char *)
 {
 	g_KZPlugin.AddonInit();
-	KZ::course::ClearCourses();
-	KZ::mapapi::Init();
+	// HNS: Course system disabled
+	// KZ::course::ClearCourses();
+	// HNS: Mapping API disabled
+	// KZ::mapapi::Init();
 	RETURN_META(MRES_IGNORED);
 }
 
@@ -594,21 +611,24 @@ static_function bool Hook_FireEvent(IGameEvent *event, bool bDontBroadcast)
 			KZPlayer *player = g_pKZPlayerManager->ToPlayer(instance->GetEntityIndex());
 			if (player)
 			{
-				player->timerService->OnPlayerDeath();
-				player->quietService->SendFullUpdate();
+				// HNS: Player death service calls disabled
+				// player->timerService->OnPlayerDeath();
+				// player->quietService->SendFullUpdate();
 			}
 		}
 		else if (KZ_STREQI(event->GetName(), "round_prestart"))
 		{
 			hooks::HookEntities();
-			KZ::mapapi::OnRoundPreStart();
+			// HNS: Mapping API round pre-start disabled
+			// KZ::mapapi::OnRoundPreStart();
 		}
 		else if (KZ_STREQI(event->GetName(), "round_start"))
 		{
 			interfaces::pEngine->ServerCommand("sv_full_alltalk 1");
-			KZTimerService::OnRoundStart();
-			KZ::misc::OnRoundStart();
-			KZ::mapapi::OnRoundStart();
+			// HNS: Round start service calls disabled
+			// KZTimerService::OnRoundStart();
+			// KZ::misc::OnRoundStart();
+			// KZ::mapapi::OnRoundStart();
 		}
 		else if (KZ_STREQI(event->GetName(), "player_team"))
 		{
@@ -622,7 +642,8 @@ static_function bool Hook_FireEvent(IGameEvent *event, bool bDontBroadcast)
 				KZPlayer *player = g_pKZPlayerManager->ToPlayer(instance->GetEntityIndex());
 				if (player)
 				{
-					player->timerService->OnPlayerSpawn();
+					// HNS: Player spawn timer service disabled
+					// player->timerService->OnPlayerSpawn();
 				}
 			}
 		}
@@ -634,13 +655,16 @@ static_function bool Hook_FireEvent(IGameEvent *event, bool bDontBroadcast)
 static_function void Hook_DispatchConCommand(ConCommandRef cmd, const CCommandContext &ctx, const CCommand &args)
 {
 	VPROF_BUDGET(__func__, "CS2KZ");
-	if (META_RES result = KZ::misc::CheckBlockedRadioCommands(args[0]))
+	// HNS: Misc radio command blocking disabled
+	// if (META_RES result = KZ::misc::CheckBlockedRadioCommands(args[0]))
+	// {
+	//	RETURN_META(result);
+	// }
+	// HNS: Option service disabled - always process chat commands
+	if (true) // KZOptionService::GetOptionInt("overridePlayerChat", true)
 	{
-		RETURN_META(result);
-	}
-	if (KZOptionService::GetOptionInt("overridePlayerChat", true))
-	{
-		KZ::misc::ProcessConCommand(cmd, ctx, args);
+		// HNS: Misc command processing disabled
+		// KZ::misc::ProcessConCommand(cmd, ctx, args);
 	}
 
 	META_RES mres = scmd::OnDispatchConCommand(cmd, ctx, args);
@@ -651,13 +675,15 @@ static_function void Hook_DispatchConCommand(ConCommandRef cmd, const CCommandCo
 static_function void Hook_PostEvent(CSplitScreenSlot nSlot, bool bLocalOnly, int nClientCount, const uint64 *clients, INetworkMessageInternal *pEvent,
 									const CNetMessage *pData, unsigned long nSize, NetChannelBufType_t bufType)
 {
-	KZ::quiet::OnPostEvent(pEvent, pData, clients);
+	// HNS: Quiet service disabled
+	// KZ::quiet::OnPostEvent(pEvent, pData, clients);
 }
 
 // CEntitySystem
 static_function void Hook_CEntitySystem_Spawn(int nCount, const EntitySpawnInfo_t *pInfo)
 {
-	KZ::mapapi::OnSpawn(nCount, pInfo);
+	// HNS: Mapping API spawn handling disabled
+	// KZ::mapapi::OnSpawn(nCount, pInfo);
 }
 
 // INetworkGameServer
@@ -675,10 +701,11 @@ static_function bool Hook_ActivateServer()
 	META_CONPRINTF("[KZ] Loading map %s, workshop ID %llu, size %llu\n", g_pKZUtils->GetCurrentMapVPK().Get(), id, size);
 
 	KZJumpstatsService::OnServerActivate();
-	RecordAnnounce::Clear();
-	KZ::misc::OnServerActivate();
-	KZDatabaseService::SetupMap();
-	KZGlobalService::OnActivateServer();
+	// HNS: Timer announce and database services disabled
+	// RecordAnnounce::Clear();
+	// KZ::misc::OnServerActivate();
+	// KZDatabaseService::SetupMap();
+	// KZGlobalService::OnActivateServer();
 
 	char md5[33];
 	g_pKZUtils->GetCurrentMapMD5(md5, sizeof(md5));
@@ -708,8 +735,9 @@ static_function CServerSideClientBase *Hook_ConnectClientPost(const char *pszNam
 // IGameSystem
 static_function void Hook_ServerGamePostSimulate(const EventServerGamePostSimulate_t *)
 {
-	ProcessTimers();
-	KZGlobalService::OnServerGamePostSimulate();
+	// HNS: Timer processing and global service disabled
+	// ProcessTimers();
+	// KZGlobalService::OnServerGamePostSimulate();
 }
 
 static_function void Hook_BuildGameSessionManifest(const EventBuildGameSessionManifest_t *msg)
@@ -729,6 +757,7 @@ static_function ILoadingSpawnGroup *Hook_OnCreateLoadingSpawnGroupHook(SpawnGrou
 																	   bool bConfirmResourcesLoaded,
 																	   const CUtlVector<const CEntityKeyValues *> *pKeyValues)
 {
-	KZ::mapapi::OnCreateLoadingSpawnGroupHook(pKeyValues);
+	// HNS: Mapping API spawn group hook disabled
+	// KZ::mapapi::OnCreateLoadingSpawnGroupHook(pKeyValues);
 	RETURN_META_VALUE(MRES_IGNORED, 0);
 }

@@ -26,29 +26,32 @@
 #define KZ_RECENT_TELEPORT_THRESHOLD 0.05f
 
 class KZPlayer;
-class KZAnticheatService;
-class KZBeamService;
-class KZCheckpointService;
-class KZDatabaseService;
-class KZGlobalService;
-class KZHUDService;
+// HNS: Core service classes - keep these
 class KZJumpstatsService;
 class KZLanguageService;
-class KZMapService;
-class KZMeasureService;
 class KZModeService;
-class KZNoclipService;
-class KZOptionService;
-class KZQuietService;
-class KZRacingService;
-class KZSavelocService;
-class KZSpecService;
-class KZGotoService;
-class KZStyleService;
-class KZTelemetryService;
-class KZTimerService;
-class KZTipService;
-class KZTriggerService;
+
+// HNS: Disabled service classes - not compiled for HNS
+// class KZAnticheatService;
+// class KZBeamService;
+// class KZCheckpointService;
+// class KZDatabaseService;
+// class KZGlobalService;
+// class KZHUDService;
+// class KZMapService;
+// class KZMeasureService;
+// class KZNoclipService;
+// class KZOptionService;
+// class KZQuietService;
+// class KZRacingService;
+// class KZSavelocService;
+// class KZSpecService;
+// class KZGotoService;
+// class KZStyleService;
+// class KZTelemetryService;
+// class KZTimerService;
+// class KZTipService;
+// class KZTriggerService;
 
 class KZPlayer : public MovementPlayer
 {
@@ -126,10 +129,12 @@ public:
 	virtual void OnChangeMoveType(MoveType_t oldMoveType) override;
 
 	// Other events
-	virtual void OnChangeTeamPost(i32 team) override;
+	// HNS: Function disabled - timer service not available
+	// virtual void OnChangeTeamPost(i32 team) override;
 	virtual void OnTeleport(const Vector *origin, const QAngle *angles, const Vector *velocity) override;
 
-	void PlayErrorSound();
+	// HNS: Function disabled - sound functionality simplified
+	// void PlayErrorSound();
 
 private:
 	bool hideLegs {};
@@ -138,51 +143,58 @@ private:
 	bool oldUsingTurnbinds {};
 
 public:
-	KZAnticheatService *anticheatService {};
-	KZBeamService *beamService {};
-	KZCheckpointService *checkpointService {};
-	KZDatabaseService *databaseService {};
-	KZGlobalService *globalService {};
-	KZHUDService *hudService {};
+	// HNS: Core service pointers - keep these
 	KZJumpstatsService *jumpstatsService {};
 	KZLanguageService *languageService {};
-	KZMeasureService *measureService {};
 	KZModeService *modeService {};
-	KZNoclipService *noclipService {};
-	KZOptionService *optionService {};
-	KZQuietService *quietService {};
-	KZRacingService *racingService {};
-	KZSavelocService *savelocService {};
-	KZSpecService *specService {};
-	KZGotoService *gotoService {};
-	CUtlVector<KZStyleService *> styleServices {};
-	KZTelemetryService *telemetryService {};
-	KZTimerService *timerService {};
-	KZTipService *tipService {};
-	KZTriggerService *triggerService {};
+	
+	// HNS: Disabled service pointers - not needed for HNS
+	// KZAnticheatService *anticheatService {};
+	// KZBeamService *beamService {};
+	// KZCheckpointService *checkpointService {};
+	// KZDatabaseService *databaseService {};
+	// KZGlobalService *globalService {};
+	// KZHUDService *hudService {};
+	// KZMeasureService *measureService {};
+	// KZNoclipService *noclipService {};
+	// KZOptionService *optionService {};
+	// KZQuietService *quietService {};
+	// KZRacingService *racingService {};
+	// KZSavelocService *savelocService {};
+	// KZSpecService *specService {};
+	// KZGotoService *gotoService {};
+	// CUtlVector<KZStyleService *> styleServices {};
+	// KZTelemetryService *telemetryService {};
+	// KZTimerService *timerService {};
+	// KZTipService *tipService {};
+	// KZTriggerService *triggerService {};
 
 	void DisableTurnbinds();
 	void EnableGodMode();
 
 	// Leg stuff
-	void ToggleHideLegs();
+	// HNS: Function disabled - option service not available
+	// void ToggleHideLegs();
 
 	bool HidingLegs()
 	{
 		return this->hideLegs;
 	}
 
-	void UpdatePlayerModelAlpha();
+	// HNS: Function disabled - player model alpha functionality not needed
+	// void UpdatePlayerModelAlpha();
 	// Teleport checking, used for multiple services
 	virtual bool JustTeleported(f32 threshold = KZ_RECENT_TELEPORT_THRESHOLD);
 	// Triggerfix stuff
 
 	// Hit all triggers from start to end with the specified bounds,
 	// and call Touch/StartTouch on triggers that the player is touching.
-	virtual void TouchTriggersAlongPath(const Vector &start, const Vector &end, const bbox_t &bounds);
+	// HNS: Function disabled - trigger service not available
+	// virtual void TouchTriggersAlongPath(const Vector &start, const Vector &end, const bbox_t &bounds);
 
 	// Update the list of triggers that the player is touching, and call StartTouch/EndTouch appropriately.
-	virtual void UpdateTriggerTouchList();
+	// HNS: Function disabled - trigger service not available
+	// virtual void UpdateTriggerTouchList();
 
 	// Print helpers
 	virtual void PrintConsole(bool addPrefix, bool includeSpectators, const char *format, ...);

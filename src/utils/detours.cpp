@@ -139,5 +139,6 @@ bool Detour_TraceShape(const void *physicsQuery, const Ray_t &ray, const Vector 
 void Detour_CPhysicsGameSystemFrameBoundary(void *pThis)
 {
 	CPhysicsGameSystemFrameBoundary(pThis);
-	KZ::misc::OnPhysicsGameSystemFrameBoundary(pThis);
+	// HNS: Misc module disabled
+	// KZ::misc::OnPhysicsGameSystemFrameBoundary(pThis);
 }
