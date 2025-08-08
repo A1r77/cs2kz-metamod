@@ -7,7 +7,6 @@
 #include "interfaces/interfaces.h"
 
 #include "../language/kz_language.h"
-#include "../option/kz_option.h"
 #include "../telemetry/kz_telemetry.h"
 
 #include "utils/simplecmds.h"
@@ -21,10 +20,7 @@ KZModeManager *g_pKZModeManager = &modeManager;
 CUtlVector<KZModeManager::ModePluginInfo> modeInfos;
 
 
-static_global class KZOptionServiceEventListener_Modes : public KZOptionServiceEventListener
-{
-	virtual void OnPlayerPreferencesLoaded(KZPlayer *player) override;
-} optionEventListener;
+// HNS: Option event listener removed - no longer needed
 
 bool KZ::mode::CheckModeCvars()
 {
@@ -51,7 +47,6 @@ void KZ::mode::InitModeManager()
 		return;
 	}
 	// VNL mode removed - using CKZ as default mode only
-	KZOptionService::RegisterEventListener(&optionEventListener);
 	initialized = true;
 }
 
@@ -268,7 +263,7 @@ bool KZModeManager::SwitchToMode(KZPlayer *player, const char *modeName, bool si
 	player->SetVelocity({0, 0, 0});
 	player->jumpstatsService->InvalidateJumpstats("Externally modified");
 
-	player->optionService->SetPreferenceStr("preferredMode", modeName);
+	// HNS: Mode preference saving disabled - always use CKZ
 	return true;
 }
 
@@ -370,12 +365,4 @@ KZModeManager::ModePluginInfo KZ::mode::GetModeInfo(CUtlString modeName)
 
 
 
-void KZOptionServiceEventListener_Modes::OnPlayerPreferencesLoaded(KZPlayer *player)
-{
-	const char *mode = player->optionService->GetPreferenceStr("preferredMode", KZOptionService::GetOptionStr("defaultMode", KZ_DEFAULT_MODE));
-	// Give up changing modes if the player is already in the server for a while.
-	if (player->telemetryService->GetTimeInServer() < 30.0f)
-	{
-		modeManager.SwitchToMode(player, mode, false, false);
-	}
-}
+// HNS: Option event listener function removed

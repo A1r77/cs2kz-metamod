@@ -96,13 +96,9 @@ void KZPlayer::Reset()
 	this->measureService->Reset();
 	this->beamService->Reset();
 
-	g_pKZModeManager->SwitchToMode(this, KZOptionService::GetOptionStr("defaultMode", KZ_DEFAULT_MODE), true, true);
+	g_pKZModeManager->SwitchToMode(this, KZ_DEFAULT_MODE, true, true); // HNS: Always use CKZ mode
 	g_pKZStyleManager->ClearStyles(this, true);
-	CSplitString styles(KZOptionService::GetOptionStr("defaultStyles"), ",");
-	FOR_EACH_VEC(styles, i)
-	{
-		g_pKZStyleManager->AddStyle(this, styles[i]);
-	}
+	// HNS: Default styles disabled - using basic configuration only
 }
 
 void KZPlayer::OnPlayerConnect(u64 steamID64)
