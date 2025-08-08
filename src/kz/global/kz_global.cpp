@@ -61,7 +61,7 @@ void KZGlobalService::UpdateRecordCache()
 				continue;
 			}
 
-			PluginId modeID = KZ::mode::GetModeInfo(record.mode).id;
+			PluginId modeID = g_PLID;
 
 			KZTimerService::InsertRecordToCache(record.time, course, modeID, record.nubPoints != 0, true);
 		}
@@ -300,7 +300,7 @@ void KZGlobalService::OnPlayerAuthorized()
 						continue;
 					}
 
-					PluginId modeID = KZ::mode::GetModeInfo(record.mode).id;
+					PluginId modeID = g_PLID;
 
 					if (record.nubPoints != 0)
 					{
