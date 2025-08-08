@@ -5,8 +5,6 @@
 #include "interfaces/interfaces.h"
 #include "filesystem.h"
 #include "utils/ctimer.h"
-#include "kz/checkpoint/kz_checkpoint.h"
-#include "kz/timer/kz_timer.h"
 
 #include <vendor/ClientCvarValue/public/iclientcvarvalue.h>
 #include <vendor/MultiAddonManager/public/imultiaddonmanager.h>

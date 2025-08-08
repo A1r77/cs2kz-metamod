@@ -2,7 +2,6 @@
 #include "vendor/tinyformat.h"
 
 #include "../kz.h"
-#include "../spec/kz_spec.h"
 #include "utils/eventlisteners.h"
 
 class KZLanguageService : public KZBaseService
@@ -155,10 +154,8 @@ private:
 		PrintType(player, addPrefix, type, message, args...);
 		if (includeSpectators)
 		{
-			for (KZPlayer *spec = player->specService->GetNextSpectator(NULL); spec != NULL; spec = player->specService->GetNextSpectator(spec))
-			{
-				PrintType(spec, addPrefix, type, message, args...);
-			}
+			// HNS: Spectator message broadcasting disabled - spec module will be removed
+			// Original: for (KZPlayer *spec = player->specService->GetNextSpectator(NULL); ...)
 		}
 	}
 
