@@ -7,7 +7,6 @@
 #include "interfaces/interfaces.h"
 
 #include "../language/kz_language.h"
-#include "../telemetry/kz_telemetry.h"
 
 #include "utils/simplecmds.h"
 #include "utils/plat.h"
