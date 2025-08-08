@@ -85,7 +85,7 @@ static_global void PrintCategoryCommands(KZPlayer *player, i32 category, bool pr
 			{
 				CUtlString newEntry = table.GetEntry(cmdCount - 1).data[0];
 				// Remove the trailing space that exists in each column
-				newEntry.SetLength(newEntry.Length() - strlen("ᅟ"));
+				newEntry.SetLength(newEntry.Length() - strlen(" "));
 				newEntry.Append("/");
 				newEntry.Append(cmds[i].name);
 				table.Set(cmdCount - 1, 0, newEntry);

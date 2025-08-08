@@ -151,6 +151,7 @@ for sdk_target in MMSPlugin.sdk_targets:
     os.path.join(builder.sourcePath, 'src', 'kz', 'measure', 'kz_measure.cpp'),
     os.path.join(builder.sourcePath, 'src', 'kz', 'mode', 'kz_mode_manager.cpp'),
     os.path.join(builder.sourcePath, 'src', 'kz', 'mode', 'kz_mode_vnl.cpp'),
+    os.path.join(builder.sourcePath, 'src', 'kz', 'mode', 'kz_mode_ckz.cpp'),
     os.path.join(builder.sourcePath, 'src', 'kz', 'noclip', 'kz_noclip.cpp'),
     os.path.join(builder.sourcePath, 'src', 'kz', 'option', 'kz_option.cpp'),
     os.path.join(builder.sourcePath, 'src', 'kz', 'quiet', 'kz_quiet.cpp'),
@@ -185,39 +186,7 @@ for sdk_target in MMSPlugin.sdk_targets:
 
   binary.custom = [builder.tools.Protoc(protoc = sdk_target.protoc, sources = PROTOS)]
 
-  # Mode binaries
-  mode_binary = MMSPlugin.HL2Library(builder, cxx, f"{MMSPlugin.plugin_name}-mode-ckz", sdk)
-
-  if mode_binary.compiler.family == 'gcc' or mode_binary.compiler.family == 'clang':
-    mode_binary.compiler.defines += ['_GLIBCXX_USE_CXX11_ABI=0']
-
-  if mode_binary.compiler.family == 'clang':
-    mode_binary.compiler.cxxflags += ['-Wno-register', '-frtti', '-Wno-invalid-offsetof', '-Wno-parentheses']
-
-  mode_binary.compiler.cxxincludes += CXXINCLUDES
-
-  if mode_binary.compiler.target.platform == 'linux':
-    mode_binary.compiler.postlink += [
-      os.path.join(sdk['path'], 'lib', 'linux64', 'mathlib.a'),
-    ] 
-    mode_binary.sources += [
-      'src/utils/plat_linux.cpp'
-      ]
-  elif mode_binary.compiler.target.platform == 'windows':
-    mode_binary.compiler.postlink += [
-      os.path.join(sdk['path'], 'lib', 'public', 'win64', 'mathlib.lib'),
-    ]
-    mode_binary.sources += [
-      'src/utils/plat_win.cpp'
-      ]
-
-  mode_binary.sources += [
-    os.path.join(sdk['path'], 'entity2', 'entityidentity.cpp'),
-    os.path.join(sdk['path'], 'entity2', 'entitysystem.cpp'),
-    os.path.join(builder.sourcePath, 'src', 'utils', 'schema.cpp'),
-    os.path.join(builder.sourcePath, 'src', 'utils', 'gameconfig.cpp'),
-    os.path.join(builder.sourcePath, 'src', 'kz', 'mode', 'kz_mode_ckz.cpp'),
-  ]
+  # Mode binaries - REMOVED: CKZ is now built into main plugin
   
   # Style binaries
   style_binary = MMSPlugin.HL2Library(builder, cxx, f"{MMSPlugin.plugin_name}-style-autobhop", sdk)
@@ -260,22 +229,18 @@ for sdk_target in MMSPlugin.sdk_targets:
   ]
 
   binary.custom = [protoc_builder]
-  mode_binary.custom = [protoc_builder]
   style_binary.custom = [protoc_builder]
 
   nodes = builder.Add(binary)
-  mode_nodes = builder.Add(mode_binary)
   style_nodes = builder.Add(style_binary)
 
-  # If we are generating a VS project, make sure to add the modes in, and the build folder for linter.
+  # If we are generating a VS project, make sure to add the styles in, and the build folder for linter.
   if builder.options.generator == 'vs':
-    binary.sources += mode_binary.sources
     binary.sources += style_binary.sources
     binary.compiler.cxxincludes += [os.path.join(builder.buildPath, MMSPlugin.plugin_name, f'{binary.compiler.target.platform}-{cxx.target.arch}')]
 
 
   MMSPlugin.binaries += [nodes]
-  MMSPlugin.mode_binaries += [mode_nodes]
   MMSPlugin.style_binaries += [style_nodes]
 
 # vim: filetype=python expandtab shiftwidth=2 tabstop=8 textwidth=99

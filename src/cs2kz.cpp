@@ -100,7 +100,7 @@ bool KZPlugin::Unload(char *error, size_t maxlen)
 void KZPlugin::AllPluginsLoaded()
 {
 	KZDatabaseService::Init();
-	KZ::mode::LoadModePlugins();
+	// KZ::mode::LoadModePlugins(); // Removed: CKZ is now built-in
 	KZ::style::LoadStylePlugins();
 	g_pKZPlayerManager->ResetPlayers();
 	this->UpdateSelfMD5();

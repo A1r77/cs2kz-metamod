@@ -19,7 +19,7 @@ namespace utils
 			for (u32 i = 0; i < columnCount; i++)
 			{
 				this->headers[i] = headers[i];
-				this->headers[i].Append("ᅟ"); // Add a space to reset the "font" to monospace
+				this->headers[i].Append(" "); // Add a space to reset the "font" to monospace
 				columnLengths[i] = this->headers[i].Length();
 			}
 		}
@@ -29,7 +29,7 @@ namespace utils
 			for (u32 i = 0; i < columnCount; i++)
 			{
 				this->headers[i] = headers[i];
-				this->headers[i].Append("ᅟ"); // Add a space to reset the "font" to monospace
+				this->headers[i].Append(" "); // Add a space to reset the "font" to monospace
 				columnLengths[i] = this->headers[i].Length();
 			}
 		}
@@ -57,7 +57,7 @@ namespace utils
 				entries.SetCountNonDestructively(row + 1);
 			}
 			entries[row].data[column] = value;
-			entries[row].data[column].Append("ᅟ"); // Add a space to reset the "font" to monospace
+			entries[row].data[column].Append(" "); // Add a space to reset the "font" to monospace
 			columnLengths[column] = MAX(columnLengths[column], (u32)V_strlen(entries[row].data[column].Get()));
 			return true;
 		}
@@ -78,7 +78,7 @@ namespace utils
 			entries[row] = {args...};
 			for (u32 i = 0; i < columnCount; i++)
 			{
-				entries[row].data[i].Append("ᅟ"); // Add a space to reset the "font" to monospace
+				entries[row].data[i].Append(" "); // Add a space to reset the "font" to monospace
 				columnLengths[i] = MAX(columnLengths[i], (u32)V_strlen(entries[row].data[i].Get()));
 			}
 		}

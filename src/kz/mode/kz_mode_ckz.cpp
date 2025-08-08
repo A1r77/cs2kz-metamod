@@ -9,131 +9,12 @@
 
 #include "version.h"
 
-KZClassicModePlugin g_KZClassicModePlugin;
-
-CGameConfig *g_pGameConfig = NULL;
-KZUtils *g_pKZUtils = NULL;
-KZModeManager *g_pModeManager = NULL;
-MappingInterface *g_pMappingApi = NULL;
-ModeServiceFactory g_ModeFactory = [](KZPlayer *player) -> KZModeService * { return new KZClassicModeService(player); };
-PLUGIN_EXPOSE(KZClassicModePlugin, g_KZClassicModePlugin);
+// Global variables are now externally managed
 
 CConVarRef<f32> sv_standable_normal("sv_standable_normal");
 
-bool KZClassicModePlugin::Load(PluginId id, ISmmAPI *ismm, char *error, size_t maxlen, bool late)
-{
-	PLUGIN_SAVEVARS();
-	// Load mode
-	int success;
-	g_pModeManager = (KZModeManager *)g_SMAPI->MetaFactory(KZ_MODE_MANAGER_INTERFACE, &success, 0);
-	if (success == META_IFACE_FAILED)
-	{
-		V_snprintf(error, maxlen, "Failed to find %s interface", KZ_MODE_MANAGER_INTERFACE);
-		return false;
-	}
-	g_pKZUtils = (KZUtils *)g_SMAPI->MetaFactory(KZ_UTILS_INTERFACE, &success, 0);
-	if (success == META_IFACE_FAILED)
-	{
-		V_snprintf(error, maxlen, "Failed to find %s interface", KZ_UTILS_INTERFACE);
-		return false;
-	}
-	g_pMappingApi = (MappingInterface *)g_SMAPI->MetaFactory(KZ_MAPPING_INTERFACE, &success, 0);
-	if (success == META_IFACE_FAILED)
-	{
-		V_snprintf(error, maxlen, "Failed to find %s interface", KZ_MAPPING_INTERFACE);
-		return false;
-	}
-	modules::Initialize();
-	if (!interfaces::Initialize(ismm, error, maxlen))
-	{
-		V_snprintf(error, maxlen, "Failed to initialize interfaces");
-		return false;
-	}
-
-	if (nullptr == (g_pGameConfig = g_pKZUtils->GetGameConfig()))
-	{
-		V_snprintf(error, maxlen, "Failed to get game config");
-		return false;
-	}
-
-	if (!g_pModeManager->RegisterMode(g_PLID, MODE_NAME_SHORT, MODE_NAME, g_ModeFactory))
-	{
-		V_snprintf(error, maxlen, "Failed to register mode");
-		return false;
-	}
-
-	ConVar_Register();
-	return true;
-}
-
-bool KZClassicModePlugin::Unload(char *error, size_t maxlen)
-{
-	g_pModeManager->UnregisterMode(g_PLID);
-	return true;
-}
-
-bool KZClassicModePlugin::Pause(char *error, size_t maxlen)
-{
-	g_pModeManager->UnregisterMode(g_PLID);
-	return true;
-}
-
-bool KZClassicModePlugin::Unpause(char *error, size_t maxlen)
-{
-	if (!g_pModeManager->RegisterMode(g_PLID, MODE_NAME_SHORT, MODE_NAME, g_ModeFactory))
-	{
-		return false;
-	}
-	return true;
-}
-
-const char *KZClassicModePlugin::GetLicense()
-{
-	return "GPLv3";
-}
-
-const char *KZClassicModePlugin::GetVersion()
-{
-	return VERSION_STRING;
-}
-
-const char *KZClassicModePlugin::GetDate()
-{
-	return __DATE__;
-}
-
-const char *KZClassicModePlugin::GetLogTag()
-{
-	return "KZ-Mode-Classic";
-}
-
-const char *KZClassicModePlugin::GetAuthor()
-{
-	return "zer0.k";
-}
-
-const char *KZClassicModePlugin::GetDescription()
-{
-	return "Classic mode plugin for CS2KZ";
-}
-
-const char *KZClassicModePlugin::GetName()
-{
-	return "CS2KZ-Mode-Classic";
-}
-
-const char *KZClassicModePlugin::GetURL()
-{
-	return "https://github.com/KZGlobalTeam/cs2kz-metamod";
-}
-
-CGameEntitySystem *GameEntitySystem()
-{
-	return g_pKZUtils->GetGameEntitySystem();
-}
-
 /*
-	Actual mode stuff.
+	KZClassicModeService implementation - Core CKZ movement physics
 */
 
 void KZClassicModeService::Reset()
@@ -1064,46 +945,18 @@ void KZClassicModeService::OnTeleport(const Vector *newPosition, const QAngle *n
 	}
 }
 
-// Only touch timer triggers on half ticks.
+// Simplified trigger handling - no timer zone restrictions needed for HNS
 bool KZClassicModeService::OnTriggerStartTouch(CBaseTrigger *trigger)
 {
-	if (!g_pMappingApi->IsTriggerATimerZone(trigger))
-	{
-		return true;
-	}
-	f64 tick = g_pKZUtils->GetGlobals()->curtime * ENGINE_FIXED_TICK_RATE;
-	if (fabs(roundf(tick) - tick) < 0.001f || fabs(roundf(tick) - tick - 0.5f) < 0.001f)
-	{
-		return true;
-	}
-
-	return false;
+	return true;
 }
 
 bool KZClassicModeService::OnTriggerTouch(CBaseTrigger *trigger)
 {
-	if (!g_pMappingApi->IsTriggerATimerZone(trigger))
-	{
-		return true;
-	}
-	f64 tick = g_pKZUtils->GetGlobals()->curtime * ENGINE_FIXED_TICK_RATE;
-	if (fabs(roundf(tick) - tick) < 0.001f || fabs(roundf(tick) - tick - 0.5f) < 0.001f)
-	{
-		return true;
-	}
-	return false;
+	return true;
 }
 
 bool KZClassicModeService::OnTriggerEndTouch(CBaseTrigger *trigger)
 {
-	if (!g_pMappingApi->IsTriggerATimerZone(trigger))
-	{
-		return true;
-	}
-	f64 tick = g_pKZUtils->GetGlobals()->curtime * ENGINE_FIXED_TICK_RATE;
-	if (fabs(roundf(tick) - tick) < 0.001f || fabs(roundf(tick) - tick - 0.5f) < 0.001f)
-	{
-		return true;
-	}
-	return false;
+	return true;
 }

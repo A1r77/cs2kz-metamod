@@ -1,5 +1,6 @@
 #include "kz_mode.h"
 #include "kz_mode_vnl.h"
+#include "kz_mode_ckz.h"
 
 #include "filesystem.h"
 
@@ -114,7 +115,7 @@ void KZ::mode::UpdateModeDatabaseID(CUtlString name, i32 id, CUtlString shortNam
 void KZ::mode::InitModeService(KZPlayer *player)
 {
 	delete player->modeService;
-	player->modeService = new KZVanillaModeService(player);
+	player->modeService = new KZClassicModeService(player); // Always use CKZ mode
 }
 
 void KZ::mode::DisableReplicatedModeCvars()
