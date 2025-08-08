@@ -25,14 +25,8 @@ RecordAnnounce::RecordAnnounce(KZPlayer *player)
 	KZ::API::Mode apiMode;
 	this->global = KZ::API::DecodeModeString(this->mode.name, apiMode);
 	this->mode.md5 = mode.md5;
-	if (mode.databaseID <= 0)
-	{
-		this->local = false;
-	}
-	else
-	{
-		this->mode.localID = mode.databaseID;
-	}
+	// Use fixed database ID for CKZ mode
+	this->mode.localID = 1;
 
 	// Setup map
 	this->map.name = g_pKZUtils->GetServerGlobals()->mapname.ToCStr();

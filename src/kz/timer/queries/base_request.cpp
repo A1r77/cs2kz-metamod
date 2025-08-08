@@ -351,7 +351,7 @@ void BaseRequest::SetupMode(CUtlString modeName)
 		}
 
 		this->modeName = modeInfo.shortModeName;
-		this->localModeID = modeInfo.databaseID;
+		this->localModeID = 1; // Fixed CKZ mode database ID
 	}
 	else
 	{
@@ -359,13 +359,13 @@ void BaseRequest::SetupMode(CUtlString modeName)
 
 		KZModeManager::ModePluginInfo modeInfo = KZ::mode::GetModeInfo(modeName);
 
-		if (modeInfo.databaseID < 0)
+		if (modeInfo.id < 0) // Check if mode exists
 		{
 			this->localStatus = ResponseStatus::DISABLED;
 		}
 		else
 		{
-			this->localModeID = modeInfo.databaseID;
+			this->localModeID = 1; // Fixed CKZ mode database ID
 		}
 	}
 

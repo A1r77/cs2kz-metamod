@@ -131,9 +131,6 @@ public:
 
 	static void FindPlayerByAlias(CUtlString playerName, TransactionSuccessCallbackFunc onSuccess, TransactionFailureCallbackFunc onFailure);
 
-	// Mode
-	static void UpdateModeIDs();
-	static void InsertAndUpdateModeIDs(CUtlString modeName, CUtlString shortName);
 
 	// Styles
 	static void UpdateStyleIDs();

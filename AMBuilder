@@ -130,7 +130,6 @@ for sdk_target in MMSPlugin.sdk_targets:
     os.path.join(builder.sourcePath, 'src', 'kz', 'db', 'setup_database.cpp'),
     os.path.join(builder.sourcePath, 'src', 'kz', 'db', 'setup_map_courses.cpp'),
     os.path.join(builder.sourcePath, 'src', 'kz', 'db', 'setup_map.cpp'),
-    os.path.join(builder.sourcePath, 'src', 'kz', 'db', 'setup_modes.cpp'),
     os.path.join(builder.sourcePath, 'src', 'kz', 'db', 'setup_styles.cpp'),
 
     os.path.join(builder.sourcePath, 'src', 'kz', 'global', 'kz_global.cpp'),

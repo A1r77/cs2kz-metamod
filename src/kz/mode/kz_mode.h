@@ -203,8 +203,6 @@ class KZModeManager
 public:
 	struct ModePluginInfo
 	{
-		// ID 0 is reserved for VNL
-		// -1 is for mode that exists in the database (but not loaded in the plugin)
 		// -2 is for invalid mode.
 		PluginId id = -2;
 		CUtlString shortModeName;
@@ -212,7 +210,6 @@ public:
 		ModeServiceFactory factory {};
 		bool shortCmdRegistered {};
 		char md5[33] {};
-		i32 databaseID = -1;
 	};
 
 	// clang-format off
@@ -232,7 +229,6 @@ namespace KZ::mode
 	void InitModeService(KZPlayer *player);
 	void InitModeManager();
 	void LoadModePlugins();
-	void UpdateModeDatabaseID(CUtlString name, i32 id, CUtlString shortName = "");
 	// clang-format off
 
 	inline const char *modeCvarNames[] = {
@@ -315,5 +311,4 @@ namespace KZ::mode
 	KZModeManager::ModePluginInfo GetModeInfo(KZModeService *mode);
 	KZModeManager::ModePluginInfo GetModeInfo(KZ::API::Mode mode);
 	KZModeManager::ModePluginInfo GetModeInfo(CUtlString modeName);
-	KZModeManager::ModePluginInfo GetModeInfoFromDatabaseID(i32 id);
 }; // namespace KZ::mode

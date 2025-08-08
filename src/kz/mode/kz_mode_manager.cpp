@@ -7,7 +7,6 @@
 #include "interfaces/interfaces.h"
 
 #include "../language/kz_language.h"
-#include "../db/kz_db.h"
 #include "../option/kz_option.h"
 #include "../telemetry/kz_telemetry.h"
 
@@ -21,11 +20,6 @@ KZModeManager *g_pKZModeManager = &modeManager;
 
 CUtlVector<KZModeManager::ModePluginInfo> modeInfos;
 
-static_global class KZDatabaseServiceEventListener_Modes : public KZDatabaseServiceEventListener
-{
-public:
-	virtual void OnDatabaseSetup() override;
-} databaseEventListener;
 
 static_global class KZOptionServiceEventListener_Modes : public KZOptionServiceEventListener
 {
@@ -57,7 +51,6 @@ void KZ::mode::InitModeManager()
 		return;
 	}
 	// VNL mode removed - using CKZ as default mode only
-	KZDatabaseService::RegisterEventListener(&databaseEventListener);
 	KZOptionService::RegisterEventListener(&optionEventListener);
 	initialized = true;
 }
@@ -90,24 +83,6 @@ void KZ::mode::LoadModePlugins()
 	}
 }
 
-void KZ::mode::UpdateModeDatabaseID(CUtlString name, i32 id, CUtlString shortName)
-{
-	// Check if the mode already exists in the list, if yes, we update it.
-	FOR_EACH_VEC(modeInfos, i)
-	{
-		if (!V_stricmp(modeInfos[i].longModeName, name))
-		{
-			modeInfos[i].databaseID = id;
-			if (!shortName.IsEmpty())
-			{
-				modeInfos[i].shortModeName = shortName;
-			}
-			return;
-		}
-	}
-	// If the code reaches here, that means the mode is not in the list yet.
-	modeInfos.AddToTail({-1, name.Get(), shortName.Get()});
-}
 
 void KZ::mode::InitModeService(KZPlayer *player)
 {
@@ -172,12 +147,10 @@ bool KZModeManager::RegisterMode(PluginId id, const char *shortModeName, const c
 	V_snprintf(shortModeDescription, 64, "Command Description - kz_%s", shortModeName);
 	bool shortCmdRegistered = scmd::RegisterCmd(V_strlower(shortModeCmd), Command_KzModeShort, shortModeDescription, SCFL_MODESTYLE);
 
-	// Add to the list otherwise, and update the database for ID.
+	// Add to the list otherwise
 	if (!info)
 	{
 		info = modeInfos.AddToTailGetPtr();
-		// If there is already information about this mode while the ID is -1, that means it has to come from the database, so no need to update it.
-		KZDatabaseService::InsertAndUpdateModeIDs(longModeName, shortModeName);
 	}
 	*info = {id, shortModeName, longModeName, factory, shortCmdRegistered};
 	if (id)
@@ -410,29 +383,8 @@ KZModeManager::ModePluginInfo KZ::mode::GetModeInfo(CUtlString modeName)
 	return emptyInfo;
 }
 
-KZModeManager::ModePluginInfo KZ::mode::GetModeInfoFromDatabaseID(i32 id)
-{
-	FOR_EACH_VEC(modeInfos, i)
-	{
-		if (modeInfos[i].databaseID == id)
-		{
-			return modeInfos[i];
-		}
-	}
-	return KZModeManager::ModePluginInfo();
-}
 
-void KZDatabaseServiceEventListener_Modes::OnDatabaseSetup()
-{
-	FOR_EACH_VEC(modeInfos, i)
-	{
-		if (modeInfos[i].databaseID == -1)
-		{
-			KZDatabaseService::InsertAndUpdateModeIDs(modeInfos[i].longModeName, modeInfos[i].shortModeName);
-		}
-	}
-	KZDatabaseService::UpdateModeIDs();
-}
+
 
 void KZOptionServiceEventListener_Modes::OnPlayerPreferencesLoaded(KZPlayer *player)
 {

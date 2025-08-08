@@ -993,8 +993,8 @@ void KZTimerService::UpdateLocalRecordCache()
 		{
 			while (result->FetchRow())
 			{
-				auto modeInfo = KZ::mode::GetModeInfoFromDatabaseID(result->GetInt(2));
-				if (modeInfo.databaseID < 0)
+				i32 dbModeID = result->GetInt(2);
+				if (dbModeID != 1) // Only accept CKZ mode (database ID = 1)
 				{
 					continue;
 				}
@@ -1003,7 +1003,7 @@ void KZTimerService::UpdateLocalRecordCache()
 				{
 					continue;
 				}
-				KZTimerService::InsertRecordToCache(result->GetFloat(0), course, modeInfo.id, true, false, result->GetString(3));
+				KZTimerService::InsertRecordToCache(result->GetFloat(0), course, g_PLID, true, false, result->GetString(3));
 			}
 		}
 		result = queries[1]->GetResultSet();
@@ -1011,8 +1011,8 @@ void KZTimerService::UpdateLocalRecordCache()
 		{
 			while (result->FetchRow())
 			{
-				auto modeInfo = KZ::mode::GetModeInfoFromDatabaseID(result->GetInt(2));
-				if (modeInfo.databaseID < 0)
+				i32 dbModeID = result->GetInt(2);
+				if (dbModeID != 1) // Only accept CKZ mode (database ID = 1)
 				{
 					continue;
 				}
@@ -1021,7 +1021,7 @@ void KZTimerService::UpdateLocalRecordCache()
 				{
 					continue;
 				}
-				KZTimerService::InsertRecordToCache(result->GetFloat(0), course, modeInfo.id, false, false, result->GetString(3));
+				KZTimerService::InsertRecordToCache(result->GetFloat(0), course, g_PLID, false, false, result->GetString(3));
 			}
 		}
 	};
@@ -1443,8 +1443,8 @@ void KZTimerService::UpdateLocalPBCache()
 		{
 			while (result->FetchRow())
 			{
-				auto modeInfo = KZ::mode::GetModeInfoFromDatabaseID(result->GetInt(2));
-				if (modeInfo.databaseID < 0)
+				i32 dbModeID = result->GetInt(2);
+				if (dbModeID != 1) // Only accept CKZ mode (database ID = 1)
 				{
 					continue;
 				}
@@ -1453,7 +1453,7 @@ void KZTimerService::UpdateLocalPBCache()
 				{
 					continue;
 				}
-				pl->timerService->InsertPBToCache(result->GetFloat(0), course, modeInfo.id, true, false, result->GetString(3));
+				pl->timerService->InsertPBToCache(result->GetFloat(0), course, g_PLID, true, false, result->GetString(3));
 			}
 		}
 		result = queries[1]->GetResultSet();
@@ -1461,8 +1461,8 @@ void KZTimerService::UpdateLocalPBCache()
 		{
 			while (result->FetchRow())
 			{
-				auto modeInfo = KZ::mode::GetModeInfoFromDatabaseID(result->GetInt(2));
-				if (modeInfo.databaseID < 0)
+				i32 dbModeID = result->GetInt(2);
+				if (dbModeID != 1) // Only accept CKZ mode (database ID = 1)
 				{
 					continue;
 				}
@@ -1471,7 +1471,7 @@ void KZTimerService::UpdateLocalPBCache()
 				{
 					continue;
 				}
-				pl->timerService->InsertPBToCache(result->GetFloat(0), course, modeInfo.id, false, false, result->GetString(3));
+				pl->timerService->InsertPBToCache(result->GetFloat(0), course, g_PLID, false, false, result->GetString(3));
 			}
 		}
 	};
