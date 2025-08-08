@@ -6,7 +6,6 @@
 #include "utils/utils.h"
 #include "interfaces/interfaces.h"
 
-#include "../timer/kz_timer.h"
 #include "../language/kz_language.h"
 #include "../db/kz_db.h"
 #include "../option/kz_option.h"
@@ -284,7 +283,6 @@ bool KZModeManager::SwitchToMode(KZPlayer *player, const char *modeName, bool si
 	player->modeService->Cleanup();
 	delete player->modeService;
 	player->modeService = factory(player);
-	player->timerService->TimerStop();
 	player->modeService->Init();
 
 	if (!silent)
@@ -440,7 +438,7 @@ void KZOptionServiceEventListener_Modes::OnPlayerPreferencesLoaded(KZPlayer *pla
 {
 	const char *mode = player->optionService->GetPreferenceStr("preferredMode", KZOptionService::GetOptionStr("defaultMode", KZ_DEFAULT_MODE));
 	// Give up changing modes if the player is already in the server for a while.
-	if (player->telemetryService->GetTimeInServer() < 30.0f && !player->timerService->GetTimerRunning())
+	if (player->telemetryService->GetTimeInServer() < 30.0f)
 	{
 		modeManager.SwitchToMode(player, mode, false, false);
 	}
