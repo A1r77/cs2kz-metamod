@@ -5,8 +5,6 @@
 
 #include "kz_jumpstats.h"
 #include "../mode/kz_mode.h"
-#include "../style/kz_style.h"
-#include "../option/kz_option.h"
 #include "../language/kz_language.h"
 
 static_global const char *columnKeys[] = {"#.",
@@ -76,12 +74,7 @@ void KZJumpstatsService::PrintJumpToConsole(KZPlayer *target, Jump *jump)
 		jumpTypeStr[jump->GetJumpType()],
 		jump->GetInvalidationReasonString(jump->invalidateReason)
 	);
-	std::string modeStyleNames = jump->GetJumpPlayer()->modeService->GetModeShortName();
-	FOR_EACH_VEC(jump->GetJumpPlayer()->styleServices, i)
-	{
-		modeStyleNames += " +";
-		modeStyleNames += jump->GetJumpPlayer()->styleServices[i]->GetStyleShortName();
-	}
+	std::string modeStyleNames = jump->GetJumpPlayer()->modeService->GetModeShortName(); // HNS: Only show mode name (CKZ)
 	target->languageService->PrintConsole(false, false, "Jumpstat Report - Console Details 1",
 		modeStyleNames.c_str(),
 		jump->strafes.Count(),

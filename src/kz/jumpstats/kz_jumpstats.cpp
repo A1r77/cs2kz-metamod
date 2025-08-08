@@ -4,10 +4,7 @@
 
 #include "kz_jumpstats.h"
 #include "../mode/kz_mode.h"
-#include "../style/kz_style.h"
-#include "../option/kz_option.h"
 #include "../language/kz_language.h"
-#include "kz/trigger/kz_trigger.h"
 
 #include "tier0/memdbgon.h"
 
@@ -373,7 +370,7 @@ void Jump::Init()
 	this->takeoffVelocity = this->player->takeoffVelocity;
 	this->jumpType = this->player->jumpstatsService->DetermineJumpType();
 
-	this->valid = this->GetJumpPlayer()->styleServices.Count() == 0;
+	this->valid = true; // HNS: All jumps are valid without style restrictions
 
 	// W release tracking.
 	f32 lastPressedTime = this->player->jumpstatsService->GetLastWPressedTime();
@@ -440,7 +437,7 @@ void Jump::Update()
 	this->currentMaxSpeed = MAX(this->player->currentMoveData->m_vecVelocity.Length2D(), this->currentMaxSpeed);
 	this->currentMaxHeight = MAX(this->player->currentMoveData->m_vecAbsOrigin.z, this->currentMaxHeight);
 
-	this->valid = this->valid && this->GetJumpPlayer()->styleServices.Count() == 0;
+	// HNS: Style validity check removed - all jumps remain valid
 }
 
 void Jump::End()
@@ -597,7 +594,7 @@ f32 Jump::GetDeviation()
 
 JumpType KZJumpstatsService::DetermineJumpType()
 {
-	if (this->jumps.Count() <= 0 || this->player->JustTeleported() || this->player->triggerService->ShouldDisableJumpstats())
+	if (this->jumps.Count() <= 0 || this->player->JustTeleported()) // HNS: Trigger disable check removed
 	{
 		return JumpType_Invalid;
 	}
@@ -691,9 +688,10 @@ f32 KZJumpstatsService::GetLastJumpRelease()
 
 void KZJumpstatsService::Reset()
 {
-	this->broadcastMinTier = static_cast<DistanceTier>(KZOptionService::GetOptionInt("defaultJSBroadcastMinTier", DistanceTier_Godlike));
-	this->soundMinTier = static_cast<DistanceTier>(KZOptionService::GetOptionInt("defaultJSSoundMinTier", DistanceTier_Godlike));
-	this->showJumpstats = KZOptionService::GetOptionInt("defaultShowJS", true);
+	// HNS: Hard-coded default values for jumpstats settings
+	this->broadcastMinTier = DistanceTier_Godlike;  // Only broadcast exceptional jumps
+	this->soundMinTier = DistanceTier_Godlike;      // Only play sounds for exceptional jumps
+	this->showJumpstats = true;                     // Always show jumpstats
 	this->jumps.Purge();
 	this->jsAlways = {};
 	this->lastJumpButtonTime = {};
@@ -717,10 +715,7 @@ void KZJumpstatsService::OnProcessMovement()
 		this->InvalidateJumpstats("First jump");
 		return;
 	}
-	if (this->player->triggerService->ShouldDisableJumpstats())
-	{
-		this->InvalidateJumpstats("Disabled By Map");
-	}
+	// HNS: Trigger-based jumpstats disable removed - always enabled
 	this->CheckValidMoveType();
 	this->DetectExternalModifications();
 

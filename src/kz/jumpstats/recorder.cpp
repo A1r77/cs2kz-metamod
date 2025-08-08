@@ -1,5 +1,4 @@
 #include "kz_jumpstats.h"
-#include "kz/option/kz_option.h"
 #include "utils/ctimer.h"
 #include "iserver.h"
 #include "filesystem.h"
@@ -16,7 +15,7 @@ static_function f64 StopDemoRecording()
 
 void KZJumpstatsService::StartDemoRecording(CUtlString playerName)
 {
-	if (alreadyRecording || !g_pFullFileSystem || !KZOptionService::GetOptionInt("autoDemoRecording"))
+	if (alreadyRecording || !g_pFullFileSystem || !true) // HNS: Auto demo recording disabled
 	{
 		return;
 	}
