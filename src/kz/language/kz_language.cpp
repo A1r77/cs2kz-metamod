@@ -5,7 +5,6 @@
 #include "interfaces/interfaces.h"
 #include "filesystem.h"
 #include "utils/ctimer.h"
-#include "kz/option/kz_option.h"
 #include "kz/checkpoint/kz_checkpoint.h"
 #include "kz/timer/kz_timer.h"
 
@@ -14,13 +13,7 @@
 
 extern IMultiAddonManager *g_pMultiAddonManager;
 
-static_global class KZOptionServiceEventListener_Language : public KZOptionServiceEventListener
-{
-	virtual void OnPlayerPreferencesLoaded(KZPlayer *player)
-	{
-		player->languageService->OnPlayerPreferencesLoaded();
-	}
-} optionEventListener;
+// HNS: Option event listener removed - language preferences are hardcoded
 
 extern IClientCvarValue *g_pClientCvarValue;
 
@@ -31,7 +24,7 @@ static_global KeyValues *addonsKV;
 void KZLanguageService::Init()
 {
 	KZLanguageService::LoadConfigFiles();
-	KZOptionService::RegisterEventListener(&optionEventListener);
+	// HNS: Option service registration removed - using hardcoded language settings
 }
 
 void KZLanguageService::LoadConfigFiles()
@@ -97,16 +90,8 @@ void KZLanguageService::LoadTranslations()
 
 void KZLanguageService::OnPlayerPreferencesLoaded()
 {
-	const char *language = this->player->optionService->GetPreferenceStr("preferredLanguage");
-	bool shouldReconnect = !(this->player->checkpointService->GetCheckpointCount() || this->player->timerService->GetTimerRunning());
-	if (language[0])
-	{
-		KZLanguageService::UpdateLanguage(this->player->GetSteamId64(false), language, LanguageInfo::CacheLevel::CACHE_PREF, shouldReconnect);
-		if (!shouldReconnect)
-		{
-			this->player->languageService->PrintChat(false, false, "Language Change - Manual Menu Change Required");
-		}
-	}
+	// HNS: Simplified language preferences - always use default language
+	// No dynamic language switching or reconnection logic needed
 }
 
 const char *KZLanguageService::GetLanguage()
@@ -171,46 +156,16 @@ void KZLanguageService::OnPlayerConnect(u64 steamID64)
 	{
 		return;
 	}
-	this->UpdateLanguage(steamID64, KZOptionService::GetOptionStr("defaultLanguage", KZ_DEFAULT_LANGUAGE), LanguageInfo::CacheLevel::CACHE_NONE,
-						 false);
-	if (g_pClientCvarValue)
-	{
-		// clang-format off
-		g_pClientCvarValue->QueryCvarValue(this->player->GetPlayerSlot(), "cl_language",
-			[steamID64](CPlayerSlot nSlot, ECvarValueStatus eStatus, const char *pszCvarName, const char *pszCvarValue)
-			{
-				if (eStatus == ECvarValueStatus::ValueIntact)
-				{
-					const char* langKey = languagesKV->GetString(pszCvarValue, pszCvarValue);
-					META_CONPRINTF("[KZ::Language] Received client convar value: %s\n", langKey);
-					KZLanguageService::UpdateLanguage(steamID64, langKey, LanguageInfo::CacheLevel::CACHE_CVAR, true);
-				}
-		});
-		// clang-format on
-	}
+	this->UpdateLanguage(steamID64, KZ_DEFAULT_LANGUAGE, LanguageInfo::CacheLevel::CACHE_NONE, false);
+	// HNS: Client language detection removed - using fixed default language
 }
 
 KZLanguageService::LanguageInfo::LanguageInfo()
 {
-	V_strncpy(this->language, KZOptionService::GetOptionStr("defaultLanguage", KZ_DEFAULT_LANGUAGE), sizeof(this->language));
+	V_strncpy(this->language, KZ_DEFAULT_LANGUAGE, sizeof(this->language));
 }
 
-SCMD(kz_language, SCFL_PREFERENCE)
-{
-	KZPlayer *player = g_pKZPlayerManager->ToPlayer(controller);
-	char language[32] {};
-	V_snprintf(language, sizeof(language), "%s", args->Arg(1));
-	V_strlower(language);
-	bool shouldReconnect = !(player->checkpointService->GetCheckpointCount() || player->timerService->GetTimerRunning());
-	KZLanguageService::UpdateLanguage(player->GetSteamId64(false), language, KZLanguageService::LanguageInfo::CacheLevel::CACHE_OVERRIDE, true);
-	player->optionService->SetPreferenceStr("preferredLanguage", language);
-	if (!shouldReconnect)
-	{
-		player->languageService->PrintChat(true, false, "Switch Language", language);
-		player->languageService->PrintChat(false, false, "Language Change - Manual Menu Change Required");
-	}
-	return MRES_SUPERCEDE;
-}
+// HNS: Language switching command removed - using fixed default language only
 
 CON_COMMAND_F(kz_reload_translations, "Reload translation configuration files", FCVAR_NONE)
 {
